@@ -11,6 +11,7 @@ rescue LoadError
   require 'rake/rdoctask'
   RDoc::Task = Rake::RDocTask
 end
+
 require 'rspec/core/rake_task'
 
 RDoc::Task.new(:rdoc) do |rdoc|
@@ -38,4 +39,3 @@ end
 
 desc "Run the unit tests"
 task :spec => ['spec:unit']
-
