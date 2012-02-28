@@ -3,9 +3,7 @@
 Better HTTP STatus coDES for RAIls!
 
 Straides provides a convenient and more consistent way for handling error conditions 
-in controllers.
-
-Straides makes it possible, for example, to abort execution of a request in a before_filter.
+in controllers. It makes it possible, for example, to abort execution of a request in a before_filter.
 
 
 # Usage
