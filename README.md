@@ -60,7 +60,7 @@ Straides can be configured by creating an initializer file at _config/initialize
     end
 
 
-## Auto-loading.
+## Auto-loading
 
 Straides loads the `error` helper method by default into every controller.
 If you don't want that, for example because you only want to use Straides in certain controllers,
