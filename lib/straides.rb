@@ -27,7 +27,7 @@ module Straides
     def show_error(error)
       unless error.has_template?
         if request.send(:format).html?
-          error.render_options[:file] = "public/#{error.render_options[:status] || 'error'}"
+          error.render_options[:file] = "public/#{error.render_options[:status] || '500'}"
           error.render_options[:formats] = [:html]
         else
           error.render_options[:nothing] = true
