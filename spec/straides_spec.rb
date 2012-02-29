@@ -4,51 +4,81 @@ describe Straides do
   class TestController
   end
 
-  it "works" do
-    TestController.should_receive(:rescue_from).once.with(Straides::ReturnHttpCodeError, :with => :show_error)
-    TestController.send :include, Straides
+  describe "including the Straides gem into a controller" do
+    it "includes the 'rescue_from' block" do
+      TestController.should_receive(:rescue_from).once.with(Straides::ReturnHttpCodeError, :with => :show_error)
+      TestController.send :include, Straides
+    end
   end
 
-  describe "instance methods" do
-    subject { TestController.new }
+  context "after the gem in included in a controller" do
+    let(:controller) { TestController.new }
 
-    it { should respond_to(:error) }
-    it { should respond_to(:show_error) }
+    describe "the controller now has Straides' error instance methods" do
+      it "has the 'error' method" do
+        controller.should respond_to :error
+      end
+
+      it "has the 'show_error' method" do
+        controller.should respond_to :show_error
+      end
+    end
 
     describe "#error" do
-      it "raises an exception with options" do
-        subject.should_receive(:raise).with(Straides::ReturnHttpCodeError, {:text => 'error', :status => 404})
-        subject.send(:error, 404, :text => 'error')
+      it "raises an ReturnHttpCodeError" do
+        controller.should_receive(:raise).with(Straides::ReturnHttpCodeError, anything)
+        controller.send(:error, 123)
+      end
+
+      it "adds the given status code to the given render options" do
+        controller.should_receive(:raise).with(Straides::ReturnHttpCodeError, hash_including(:status => 123))
+        controller.send(:error, 123)
+      end
+
+      it "forwards any other given render options to the raised error object" do
+        controller.should_receive(:raise).with(Straides::ReturnHttpCodeError, hash_including(:text => 'my error text', :foo => 'bar'))
+        controller.send(:error, 123, :text => 'my error text', :foo => 'bar')
       end
     end
 
     describe "#show_error" do
       after :each do
-        subject.send(:show_error, error)
+        controller.send(:show_error, @error)
       end
 
-      context "error has template set" do
-        let(:error) { Straides::ReturnHttpCodeError.new(:text => 'error') }
-
-        it "renders given template" do
-          subject.should_receive(:render).once.with(:text => 'error')
-        end
+      it "renders the given text" do
+        @error = Straides::ReturnHttpCodeError.new :text => 'error'
+        controller.should_receive(:render).once.with(:text => 'error')
       end
 
-      context "error hasn't template" do
-        let(:error) { Straides::ReturnHttpCodeError.new(:status => 404) }
+      it "renders the given json data structure" do
+        @error = Straides::ReturnHttpCodeError.new :json => {:foo => 'bar'}
+        controller.should_receive(:render).once.with(:json => {:foo => 'bar'})
+      end
 
-        context "on html request" do
-          it "renders default html view" do
-            subject.stub_chain("request.format.html?").and_return(true)
-            subject.should_receive(:render).once.with(:file => 'public/404', :formats => [:html], :status => 404)
+      it "renders nothing if that is explicitely requested" do
+        @error = Straides::ReturnHttpCodeError.new :nothing => true
+        controller.should_receive(:render).once.with(:nothing => true)
+      end
+
+      context "default behavior when there is no output specified" do
+        before { @error = Straides::ReturnHttpCodeError.new :status => 123 }
+
+        context "while serving an HTML request" do
+          before { controller.stub_chain("request.format.html?").and_return(true) }
+
+          it "renders the corresponding error file in the 'public' directory" do
+            controller.should_receive(:render).once.with(hash_including(:file => 'public/123'))
+          end
+          it "adds the 'html' format" do
+            controller.should_receive(:render).once.with(hash_including(:formats => [:html]))
           end
         end
 
-        context "on json request" do
-          it "renders default html view" do
-            subject.stub_chain("request.format.html?").and_return(false)
-            subject.should_receive(:render).once.with(:nothing => true, :status => 404)
+        context "while serving another type of request" do
+          before { controller.stub_chain("request.format.html?").and_return(false) }
+          it "returns an empty response body" do
+            controller.should_receive(:render).once.with(hash_including(:nothing => true))
           end
         end
       end
