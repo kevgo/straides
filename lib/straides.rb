@@ -1,6 +1,8 @@
+require 'active_support/concern'
+require 'straides/configuration'
+require 'straides/railtie'
 require 'straides/return_http_code_error'
 require 'straides/version'
-require 'active_support/concern'
 
 module Straides
   extend ActiveSupport::Concern
@@ -35,5 +37,3 @@ module Straides
     end
   end
 end
-
-ActionController::Base.send :include, Straides

@@ -47,3 +47,28 @@ as you would give to [render](http://apidock.com/rails/ActionController/Base/ren
 
     # Render a custom JSON response.
     error 401, :json => { :code => 401, :message => 'Please log in first.' }
+
+
+# Customizing Straides
+
+Straides can be configured by creating an initializer file at _config/initializers/straides.rb_.
+
+    Straides.configure do |config|
+
+      # Disable auto-loading of Straides into every controller.
+      config.auto_load = false
+    end
+
+
+## Auto-loading.
+
+Straides loads the `error` helper method by default into every controller.
+If you don't want that, for example because you only want to use Straides in certain controllers,
+you can disable this auto-loading behavior with `config.auto_load = false`.
+Please note that you then have to include Straides into every controller manually, like this:
+
+    class FooController < ApplicationController
+      include Straides
+
+      ...
+    end
