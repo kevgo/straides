@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     straides (0.1.0)
-      activesupport
+      rails
 
 GEM
   remote: http://rubygems.org/
@@ -97,7 +97,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  rails
   rake
   rspec
   straides!
