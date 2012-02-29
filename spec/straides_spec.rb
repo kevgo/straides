@@ -46,6 +46,16 @@ describe Straides do
         controller.send(:show_error, @error)
       end
 
+      it "should work with rails error code aliases" do
+        @error = Straides::ReturnHttpCodeError.new :status => :not_found, :text => "foobar"
+        controller.should_receive(:render).once.with(:status => :not_found, :text => "foobar")
+      end
+
+      it "should render nothing if only a status is provided" do
+        @error = Straides::ReturnHttpCodeError.new :status => :not_found
+        controller.should_receive(:render).once.with(:status => :not_found, :nothing => true)
+      end
+
       it "renders the given text" do
         @error = Straides::ReturnHttpCodeError.new :text => 'error'
         controller.should_receive(:render).once.with(:text => 'error')
