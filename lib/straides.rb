@@ -35,3 +35,5 @@ module Straides
     end
   end
 end
+
+ActionController::Base.send :include, Straides
