@@ -33,7 +33,7 @@ namespace :spec do
 
   desc "Run unit specs"
   RSpec::Core::RakeTask.new('unit') do |t|
-    t.pattern = 'spec/{*_spec.rb}'
+    t.pattern = 'spec/**/{*_spec.rb}'
   end
 end
 

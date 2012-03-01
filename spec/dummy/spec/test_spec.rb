@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe 'test' do
+
+  # Testing a spec in the dummy directory.
   it 'works' do
-    puts "YYYYYY"
   end
 end
