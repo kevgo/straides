@@ -1,6 +1,6 @@
 Dummy::Application.routes.draw do
 
-  resources :test,
+  resources :tests,
             :only => [] do
     collection do
       get :works

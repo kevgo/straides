@@ -1,4 +1,4 @@
-class TestController < ApplicationController
+class TestsController < ApplicationController
 
   def works
     render :text => 'works!'
