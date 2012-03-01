@@ -1,4 +1,5 @@
 require 'active_support/concern'
+require 'rack'
 require 'straides/configuration'
 require 'straides/railtie'
 require 'straides/return_http_code_error'
@@ -27,7 +28,9 @@ module Straides
     def show_error(error)
       unless error.has_template?
         if request.send(:format).html?
-          error.render_options[:file] = "public/#{error.render_options[:status] || '500'}"
+          status_code = error.render_options[:status] || '500'
+          status_code = Rack::Utils.status_code(error.render_options[:status]) if status_code.is_a?(Symbol)
+          error.render_options[:file] = "public/#{status_code}.html"
           error.render_options[:formats] = [:html]
         else
           error.render_options[:nothing] = true

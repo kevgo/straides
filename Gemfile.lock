@@ -1,7 +1,8 @@
 PATH
   remote: .
   specs:
-    straides (0.1.0)
+    straides (0.1.1)
+      rack
       rails
 
 GEM

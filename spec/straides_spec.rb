@@ -30,9 +30,14 @@ describe Straides do
         controller.send(:error, 123)
       end
 
-      it "adds the given status code to the given render options" do
+      it "adds the given numerical status code to the given render options" do
         controller.should_receive(:raise).with(Straides::ReturnHttpCodeError, hash_including(:status => 123))
         controller.send(:error, 123)
+      end
+
+      it "adds the given status code symbol to the given render options" do
+        controller.should_receive(:raise).with(Straides::ReturnHttpCodeError, hash_including(:status => :not_found))
+        controller.send(:error, :not_found)
       end
 
       it "forwards any other given render options to the raised error object" do
@@ -43,42 +48,47 @@ describe Straides do
 
     describe "#show_error" do
       after :each do
-        controller.send(:show_error, @error)
+        controller.send :show_error, @error
       end
 
-      it "should work with rails error code aliases" do
-        @error = Straides::ReturnHttpCodeError.new :status => :not_found, :text => "foobar"
-        controller.should_receive(:render).once.with(:status => :not_found, :text => "foobar")
+      describe "providing Rails symbols for status codes" do
+        it "let's rack handle the status code translation" do
+          @error = Straides::ReturnHttpCodeError.new :status => :not_found, :nothing => true
+          controller.should_receive(:render).once.with(hash_including :status => :not_found)
+        end
+
+        it "renders the correct error file when outputting HTML" do
+          controller.stub_chain("request.format.html?").and_return(true)
+          @error = Straides::ReturnHttpCodeError.new :status => :not_found
+          controller.should_receive(:render).once.with(hash_including :file => 'public/404.html')
+        end
       end
 
-      it "should render nothing if only a status is provided" do
-        @error = Straides::ReturnHttpCodeError.new :status => :not_found
-        controller.should_receive(:render).once.with(:status => :not_found, :nothing => true)
+      context "with output specified" do
+        it "renders the given text" do
+          @error = Straides::ReturnHttpCodeError.new :text => 'error'
+          controller.should_receive(:render).once.with(:text => 'error')
+        end
+
+        it "renders the given json data structure" do
+          @error = Straides::ReturnHttpCodeError.new :json => {:foo => 'bar'}
+          controller.should_receive(:render).once.with(:json => {:foo => 'bar'})
+        end
+
+        it "renders nothing if that is explicitely requested" do
+          @error = Straides::ReturnHttpCodeError.new :nothing => true
+          controller.should_receive(:render).once.with(:nothing => true)
+        end
       end
 
-      it "renders the given text" do
-        @error = Straides::ReturnHttpCodeError.new :text => 'error'
-        controller.should_receive(:render).once.with(:text => 'error')
-      end
-
-      it "renders the given json data structure" do
-        @error = Straides::ReturnHttpCodeError.new :json => {:foo => 'bar'}
-        controller.should_receive(:render).once.with(:json => {:foo => 'bar'})
-      end
-
-      it "renders nothing if that is explicitely requested" do
-        @error = Straides::ReturnHttpCodeError.new :nothing => true
-        controller.should_receive(:render).once.with(:nothing => true)
-      end
-
-      context "default behavior when there is no output specified" do
+      describe "default behavior when there is no output specified" do
         before { @error = Straides::ReturnHttpCodeError.new :status => 123 }
 
         context "while serving an HTML request" do
           before { controller.stub_chain("request.format.html?").and_return(true) }
 
           it "renders the corresponding error file in the 'public' directory" do
-            controller.should_receive(:render).once.with(hash_including(:file => 'public/123'))
+            controller.should_receive(:render).once.with(hash_including(:file => 'public/123.html'))
           end
           it "adds the 'html' format" do
             controller.should_receive(:render).once.with(hash_including(:formats => [:html]))
