@@ -24,5 +24,6 @@ end
 
 Bundler::GemHelper.install_tasks
 
+# RSpec tasks.
 RSpec::Core::RakeTask.new :spec
 task :default => :spec
