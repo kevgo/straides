@@ -9,11 +9,15 @@ in controllers. It makes it possible, for example, to abort execution of a reque
 
 1.  Add the gem to your Gemfile.
 
-        gem 'straides'
+    ```ruby
+    gem 'straides'
+    ```
 
 2.  Update your gem bundle.
 
-        $ bundle install
+    ```bash
+    $ bundle install
+    ```
 
 
 # Usage
@@ -22,11 +26,13 @@ Straides provides a helper method called `error`. Call it at any time with the H
 and optionally additional parameters for `render` to abort the current request and render an
 error message.
 
-    # Stop controller execution and return the request with the given HTTP error.
-    error 404 unless [condition]
+```ruby
+# Stop controller execution and return the request with the given HTTP error.
+error 404 unless [condition]
 
-    # Abort with an error if an operation didn't return a result.
-    user = User.find_by_username(params[:id]) or error 401
+# Abort with an error if an operation didn't return a result.
+user = User.find_by_username(params[:id]) or error 401
+```
 
 
 ## Customizing the response
@@ -39,25 +45,29 @@ Straides returns reasonable default responses dependent on the request format.
 These behaviors can be customized by providing the call to `error` with the same parameters
 as you would give to [render](http://apidock.com/rails/ActionController/Base/render) in Rails.
 
-    # Provide a custom error message in the response body.
-    error 401, :text => 'Please log in first.'
+```ruby
+# Provide a custom error message in the response body.
+error 401, :text => 'Please log in first.'
 
-    # Render a different file in the response body.
-    error 404, :file => 'public/custom_404.html'
+# Render a different file in the response body.
+error 404, :file => 'public/custom_404.html'
 
-    # Render a custom JSON response.
-    error 401, :json => { :code => 401, :message => 'Please log in first.' }
+# Render a custom JSON response.
+error 401, :json => { :code => 401, :message => 'Please log in first.' }
+```
 
 
 # Customizing Straides
 
 Straides can be configured by creating an initializer file at _config/initializers/straides.rb_.
 
-    Straides.configure do |config|
+```ruby
+Straides.configure do |config|
 
-      # Disable auto-loading of Straides into every controller.
-      config.auto_load = false
-    end
+  # Disable auto-loading of Straides into every controller.
+  config.auto_load = false
+end
+```
 
 
 ## Auto-loading
@@ -67,8 +77,10 @@ If you don't want that, for example because you only want to use Straides in cer
 you can disable this auto-loading behavior with `config.auto_load = false`.
 Please note that you then have to include Straides into every controller manually, like this:
 
-    class FooController < ApplicationController
-      include Straides
+```ruby
+class FooController < ApplicationController
+  include Straides
 
-      ...
-    end
+  ...
+end
+```
