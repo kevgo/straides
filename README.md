@@ -1,4 +1,4 @@
-# Straides [![Build Status](https://secure.travis-ci.org/kevgo/straides.png)](https://secure.travis-ci.org/kevgo/straides.png)
+# Straides [![Build Status](https://secure.travis-ci.org/kevgo/straides.png)](http://travis-ci.org/#!/kevgo/straides)
 
 Better HTTP STatus coDES for RAIls!
 
