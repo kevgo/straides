@@ -1,5 +1,6 @@
 .bundle/
 .rvmrc
+*.swp
 log/*.log
 pkg/
 spec/dummy/db/*.sqlite3
