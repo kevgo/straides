@@ -11,7 +11,7 @@ describe Straides do
     end
   end
 
-  context "after the gem in included in a controller" do
+  context "after the gem is included in a controller" do
     let(:controller) { TestController.new }
 
     describe "the controller now has Straides' error instance methods" do
@@ -60,7 +60,7 @@ describe Straides do
         it "renders the correct error file when outputting HTML" do
           controller.stub_chain("request.format.html?").and_return(true)
           @error = Straides::ReturnHttpCodeError.new :status => :not_found
-          controller.should_receive(:render).once.with(hash_including :file => 'public/404.html')
+          controller.should_receive(:render).once.with(hash_including :file => 'public/404')
         end
       end
 
@@ -88,7 +88,7 @@ describe Straides do
           before { controller.stub_chain("request.format.html?").and_return(true) }
 
           it "renders the corresponding error file in the 'public' directory" do
-            controller.should_receive(:render).once.with(hash_including(:file => 'public/123.html'))
+            controller.should_receive(:render).once.with(hash_including(:file => 'public/123'))
           end
           it "adds the 'html' format" do
             controller.should_receive(:render).once.with(hash_including(:formats => [:html]))
