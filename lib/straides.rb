@@ -30,7 +30,7 @@ module Straides
         if request.send(:format).html?
           status_code = error.render_options[:status] || '500'
           status_code = Rack::Utils.status_code(error.render_options[:status]) if status_code.is_a?(Symbol)
-          error.render_options[:file] = "public/#{status_code}.html"
+          error.render_options[:file] = "public/#{status_code}"
           error.render_options[:formats] = [:html]
         else
           error.render_options[:nothing] = true
