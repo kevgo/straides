@@ -84,3 +84,8 @@ class FooController < ApplicationController
   ...
 end
 ```
+
+# Development
+
+To run unit tests, please run `rake`.
+
