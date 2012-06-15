@@ -5,11 +5,11 @@ class HtmlController < ApplicationController
   end
 
   def text
-    error 401, text: 'descriptive error message'
+    error 401, :text => 'descriptive error message'
   end
 
   def nothing
-    error 401, nothing: true
+    error 401, :nothing => true
   end
 
   def symbol
