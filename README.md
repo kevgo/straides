@@ -5,7 +5,7 @@ Better HTTP STatus coDES for RAIls!
 Straides provides a convenient and more consistent way for handling error conditions
 in controllers. It makes it possible, for example, to abort execution of a request in a before_filter.
 
-# Installation
+## Installation
 
 1.  Add the gem to your Gemfile.
 
@@ -20,7 +20,7 @@ in controllers. It makes it possible, for example, to abort execution of a reque
     ```
 
 
-# Usage
+## Usage
 
 Straides provides a helper method called `error`. Call it at any time with the HTTP error code
 and optionally additional parameters for `render` to abort the current request and render an
@@ -35,7 +35,7 @@ user = User.find_by_username(params[:id]) or error 401
 ```
 
 
-## Customizing the response
+### Customizing the response
 
 Straides returns reasonable default responses dependent on the request format.
 
@@ -57,7 +57,7 @@ error 401, :json => { :code => 401, :message => 'Please log in first.' }
 ```
 
 
-# Customizing Straides
+## Customizing Straides
 
 Straides can be configured by creating an initializer file at _config/initializers/straides.rb_.
 
@@ -70,7 +70,7 @@ end
 ```
 
 
-## Auto-loading
+### Auto-loading
 
 Straides loads the `error` helper method by default into every controller.
 If you don't want that, for example because you only want to use Straides in certain controllers,
@@ -85,7 +85,7 @@ class FooController < ApplicationController
 end
 ```
 
-# Development
+## Development
 
 To run unit tests, please run `rake`.
 
