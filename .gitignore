@@ -1,6 +1,7 @@
 .bundle/
 .rvmrc
 *.swp
+coverage/
 Gemfile.lock
 log/*.log
 pkg/
