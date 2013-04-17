@@ -14,16 +14,6 @@ describe Straides do
   context "after the gem is included in a controller" do
     let(:controller) { TestController.new }
 
-    describe "the controller now has Straides' error instance methods" do
-      it "has the 'error' method" do
-        controller.should respond_to :error
-      end
-
-      it "has the 'show_error' method" do
-        controller.should respond_to :show_error
-      end
-    end
-
     describe "#error" do
       it "raises an ReturnHttpCodeError" do
         controller.should_receive(:raise).with(Straides::ReturnHttpCodeError, anything)
