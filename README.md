@@ -1,4 +1,4 @@
-# Straides [![Build Status](https://secure.travis-ci.org/kevgo/straides.png)](http://travis-ci.org/#!/kevgo/straides) <a href="https://codeclimate.com/github/kevgo/straides" target="_blank"><img src="https://codeclimate.com/badge.png" /></a> [![Dependency Status](https://gemnasium.com/kevgo/straides.png)](https://gemnasium.com/kevgo/straides)
+# Straides [![Build Status](https://secure.travis-ci.org/kevgo/straides.png)](http://travis-ci.org/#!/kevgo/straides) [![Code Climate](https://codeclimate.com/github/kevgo/straides.png)](https://codeclimate.com/github/kevgo/straides) [![Dependency Status](https://gemnasium.com/kevgo/straides.png)](https://gemnasium.com/kevgo/straides)
 
 Better HTTP STatus coDES for RAIls!
 
